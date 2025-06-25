@@ -1,0 +1,27 @@
+{
+  "name": "logger",
+  "version": "1.0.0",
+  "description": "Shared Winston logger with Loki transport for Node.js apps",
+  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": ["logger", "winston", "loki", "monitoring", "shared"],
+  "author": "flaviozno",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jerobas/logger.git"
+  },
+  "dependencies": {
+    "winston": "^3.17.0",
+    "winston-loki": "^6.1.3"
+  }
+}
