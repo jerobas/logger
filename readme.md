@@ -14,9 +14,22 @@ npm install git+https://github.com/jerobas/logger.git
 
 1. Import and initialize the logger
 ```bash
-import LokiLogger from 'logger';
+import LokiLogger from "logger";
 
-const logger = new LokiLogger('my-app-name', 'http://localhost:3100').getLogger();
+const logger = new LokiLogger({
+  jobName: "dev",
+  lokiHost: "http://localhost:3100",
+}).getLogger();
+```
+or
+```bash
+const loggerModule = require("logger");
+const LokiLogger = loggerModule.default;
+
+const logger = new LokiLogger({
+  jobName: "dev",
+  lokiHost: "http://localhost:3100",
+}).getLogger();
 ```
 
 2. Use the logger
