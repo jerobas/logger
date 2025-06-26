@@ -2,8 +2,8 @@
   "name": "logger",
   "version": "1.0.0",
   "description": "Shared Winston logger with Loki transport for Node.js apps",
-  "main": "dist/LokiLogger.js",
-  "type": "module",
+  "main": "dist-cjs/LokiLogger.js",
+  "module": "dist/LokiLogger.js",
   "exports": {
     ".": {
       "import": "./dist/LokiLogger.js",
