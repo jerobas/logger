@@ -1,0 +1,10 @@
+echo "⚙️ Husky: Auto build dist/"
+npm run build
+
+if [[ -n $(git status dist/ --porcelain) ]]; then
+  echo "📦 Committing dist/ changes..."
+  git add dist/
+  git commit -m "chore: update dist/ [skip ci]" --no-verify
+else
+  echo "✅ dist/ is up to date."
+fi
