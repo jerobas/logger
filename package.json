@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "echo \"No tests yet\""
+    "prepare": "husky"
   },
   "keywords": [
     "logger",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "@types/node": "^20.x.x",
     "@types/winston": "^2.4.4",
+    "husky": "^9.1.7",
     "typescript": "^5.x.x"
   }
 }
