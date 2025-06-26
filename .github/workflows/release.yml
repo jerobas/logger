@@ -1,0 +1,55 @@
+name: Build and Push dist/
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Check for changes in dist/
+        id: git_status
+        run: |
+          git status --porcelain dist/ || echo "No changes in dist/"
+          if [ -n "$(git status --porcelain dist/)" ]; then
+            echo "::set-output name=has_changes::true"
+          else
+            echo "::set-output name=has_changes::false"
+          fi
+        shell: bash
+
+      - name: Configure Git for auto-commit
+        if: steps.git_status.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Passo 7: Adiciona, commita e faz push da pasta 'dist/'
+      # Este passo só será executado se houver mudanças na pasta 'dist/'
+      - name: Commit and push dist/
+        if: steps.git_status.outputs.has_changes == 'true'
+        run: |
+          git add dist/
+          git commit -m "chore: Automated build and push of dist/ folder [skip ci]"
+          # O '[skip ci]' no commit message é uma boa prática para evitar que este push
+          # acione um novo workflow em loop infinito.
+          git push
