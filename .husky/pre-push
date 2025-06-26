@@ -7,7 +7,7 @@ npm run build
 if [[ -n $(git status dist/ --porcelain) ]]; then
   echo "📦 Committing dist/ changes..."
   git add dist/
-  git commit -m "chore: update dist/ [skip ci]" --no-verify
+  git commit -m "husky: generate dist" --no-verify
 else
   echo "✅ dist/ is up to date."
 fi

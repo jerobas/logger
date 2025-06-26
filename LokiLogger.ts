@@ -1,25 +1,15 @@
 import winston from "winston";
 import LokiTransport from "winston-loki";
 
-/**
- * Interface para as opções de configuração do LokiLogger.
- */
 interface LokiLoggerOptions {
-  jobName?: string; // O nome do job ou serviço (usado como label no Loki).
-  lokiHost?: string; // A URL do servidor Loki (e.g., "http://localhost:3100").
+  jobName?: string;
+  lokiHost?: string;
 }
 
-/**
- * Classe LokiLogger
- *
- * Configura e fornece uma instância do Winston Logger com transporte para Loki.
- * Inclui também um transporte para o console.
- */
 class LokiLogger {
   private logger: winston.Logger;
 
   /**
-   * Construtor da classe LokiLogger.
    *
    * @param {LokiLoggerOptions} [options] - Opções de configuração para o logger.
    * @param {string} [options.jobName="default-node-app"] - O nome do job ou serviço (usado como label no Loki).
@@ -29,56 +19,39 @@ class LokiLogger {
     const { jobName = "default-node-app", lokiHost = "http://localhost:3100" } =
       options || {};
 
-    // Validação básica dos parâmetros de entrada
     if (typeof jobName !== "string" || jobName.trim() === "") {
       throw new Error("JobName deve ser uma string não vazia.");
     }
     if (typeof lokiHost !== "string" || lokiHost.trim() === "") {
       throw new Error("LokiHost deve ser uma string não vazia.");
     }
-    // Uma validação mais robusta para logLevel poderia ser adicionada,
-    // mas o Winston já lida com níveis inválidos internamente.
 
     this.logger = winston.createLogger({
-      // Define o nível mínimo de log para todos os transportes
       level: "info",
       transports: [
-        // Transporte para Loki
         new LokiTransport({
           host: lokiHost,
-          labels: { job: jobName }, // Rótulos para identificar os logs no Loki
-          json: true, // Envia logs como JSON
-          replaceTimestamp: true, // Substitui o timestamp padrão do Loki pelo do Winston
-          // Outras opções para winston-loki podem ser adicionadas aqui,
-          // como 'format', 'batching', 'interval', etc.
+          labels: { job: jobName }, 
+          json: true,
+          replaceTimestamp: true,
         }),
 
-        // Transporte para Console (para depuração local)
         new winston.transports.Console({
           format: winston.format.combine(
-            winston.format.colorize(), // Adiciona cores aos níveis de log no console
-            winston.format.simple() // Formato simples para saída no console
+            winston.format.colorize(), 
+            winston.format.simple()
           ),
         }),
       ],
-      // Rejeita logs se o transporte não puder lidar com eles (por exemplo, erros de rede para Loki)
       exitOnError: false,
     });
 
-    // Opcional: Adicionar tratamento de erros para o transporte Loki
     this.logger.on("error", (err) => {
       console.error("Erro no logger Winston:", err);
     });
   }
 
   /**
-   * Retorna uma instância do Winston Logger.
-   *
-   * Você pode usar este logger para registrar mensagens em diferentes níveis:
-   * logger.info("Mensagem informativa");
-   * logger.warn("Mensagem de aviso");
-   * logger.error("Mensagem de erro", { error: someErrorObject });
-   * logger.debug("Mensagem de depuração");
    *
    * @returns {winston.Logger} A instância configurada do Winston logger.
    */
