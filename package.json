@@ -5,7 +5,10 @@
   "main": "dist/LokiLogger.js",
   "type": "module",
   "exports": {
-    ".": "./dist/LokiLogger.js",
+    ".": {
+      "import": "./dist/LokiLogger.js",
+      "require": "./dist-cjs/LokiLogger.js"
+    },
     "./types": "./dist/LokiLogger.d.ts"
   },
   "files": [
@@ -13,6 +16,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
     "prepare": "husky && husky install"
   },
   "keywords": [

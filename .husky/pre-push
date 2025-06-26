@@ -1,13 +1,16 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo "⚙️ Husky: Auto build dist/"
+echo "⚙️ Husky: Auto build dist/ (ESM)"
 npm run build
 
-if [[ -n $(git status dist/ --porcelain) ]]; then
-  echo "📦 Committing dist/ changes..."
-  git add dist/
-  git commit -m "husky: generate dist" --no-verify
+echo "⚙️ Husky: Auto build dist-cjs/ (CommonJS)"
+npm run build:cjs
+
+if [[ -n $(git status dist/ dist-cjs/ --porcelain) ]]; then
+  echo "📦 Committing dist/ and dist-cjs/ changes..."
+  git add dist/ dist-cjs/
+  git commit -m "husky: generate dist and dist-cjs" --no-verify
 else
-  echo "✅ dist/ is up to date."
+  echo "✅ dist/ and dist-cjs/ are up to date."
 fi
