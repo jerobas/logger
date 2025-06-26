@@ -12,7 +12,8 @@
     "./types": "./dist/LokiLogger.d.ts"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "dist-cjs/"
   ],
   "scripts": {
     "build": "tsc",
